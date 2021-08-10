@@ -1,0 +1,19 @@
+#! /bin/bash
+
+TOP_DIR=$(readlink -f $(dirname $0))
+if [ -z "$WHISK_ROOT" ]; then
+    WHISK_ROOT=$(dirname $(readlink -f $0))
+fi
+
+if [ -z "$WHISKCONF" ]; then
+    WHISKCONF="$TOP_DIR/whisk.yaml"
+fi
+
+cd $TOP_DIR
+. $WHISK_ROOT/init-build-env --noop
+
+if [ -z "$1" ]; then
+    exec bitbake all-targets
+else
+    exec bitbake "$@"
+fi
